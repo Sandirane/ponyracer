@@ -1,0 +1,167 @@
+{
+  "stats": {
+    "suites": 2,
+    "tests": 2,
+    "passes": 1,
+    "pending": 0,
+    "failures": 1,
+    "start": "2021-10-10T18:26:11.452Z",
+    "end": "2021-10-10T18:26:33.519Z",
+    "duration": 18728,
+    "testsRegistered": 2,
+    "passPercent": 50,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "e74ad43e-6966-47a8-b62d-8b127fb1b854",
+      "title": "",
+      "fullFile": "cypress/integration/spec.ts",
+      "file": "cypress/integration/spec.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "bb82fd9e-1ce3-4801-9c01-d3b776a9503a",
+          "title": "My First Test",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Visits the initial project page",
+              "fullTitle": "My First Test Visits the initial project page",
+              "timedOut": null,
+              "duration": 16201,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('/');\ncy.contains('Welcome');\ncy.contains('sandbox app is running!');",
+              "err": {
+                "message": "Error: EPERM: operation not permitted, open 'C:\\Users\\kumar\\Desktop\\Angular\\ponyracer\\cypress\\screenshots\\spec.ts\\My First Test -- Visits the initial project page (failed).png'",
+                "estack": "Error: EPERM: operation not permitted, open 'C:\\Users\\kumar\\Desktop\\Angular\\ponyracer\\cypress\\screenshots\\spec.ts\\My First Test -- Visits the initial project page (failed).png'\n\n",
+                "diff": null
+              },
+              "uuid": "bf769fa0-4979-4738-b34b-491f73f5655e",
+              "parentUUID": "bb82fd9e-1ce3-4801-9c01-d3b776a9503a",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "bf769fa0-4979-4738-b34b-491f73f5655e"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 16201,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    },
+    {
+      "uuid": "67b786d5-e347-4c7b-9b3b-1f04f0cd4940",
+      "title": "",
+      "fullFile": "cypress/integration/home.spec.ts",
+      "file": "cypress/integration/home.spec.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "af9ba11c-0104-4674-970c-325183cea479",
+          "title": "Ponyracer",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should display title on home page",
+              "fullTitle": "Ponyracer should display title on home page",
+              "timedOut": null,
+              "duration": 2527,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('/');\ncy.contains('h1', 'Ponyracer');",
+              "err": {},
+              "uuid": "5672a2b1-1ce7-4aef-a158-f467f49d5ccf",
+              "parentUUID": "af9ba11c-0104-4674-970c-325183cea479",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "5672a2b1-1ce7-4aef-a158-f467f49d5ccf"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 2527,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "6.2.2"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "results/mochawesome",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "5.2.0"
+    }
+  }
+}
