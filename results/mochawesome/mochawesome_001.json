@@ -5,9 +5,9 @@
     "passes": 0,
     "pending": 0,
     "failures": 1,
-    "start": "2021-10-10T18:26:17.216Z",
-    "end": "2021-10-10T18:26:33.519Z",
-    "duration": 16303,
+    "start": "2021-10-17T17:44:01.994Z",
+    "end": "2021-10-17T17:44:08.392Z",
+    "duration": 6398,
     "testsRegistered": 1,
     "passPercent": 0,
     "pendingPercent": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "e74ad43e-6966-47a8-b62d-8b127fb1b854",
+      "uuid": "7155fa74-b108-4468-8ec2-7a8486d29dca",
       "title": "",
       "fullFile": "cypress/integration/spec.ts",
       "file": "cypress/integration/spec.ts",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "bb82fd9e-1ce3-4801-9c01-d3b776a9503a",
+          "uuid": "e07e12fe-1012-4681-9116-7f97dd235ac3",
           "title": "My First Test",
           "fullFile": "",
           "file": "",
@@ -38,7 +38,7 @@
               "title": "Visits the initial project page",
               "fullTitle": "My First Test Visits the initial project page",
               "timedOut": null,
-              "duration": 16201,
+              "duration": 6335,
               "state": "failed",
               "speed": null,
               "pass": false,
@@ -51,8 +51,8 @@
                 "estack": "Error: EPERM: operation not permitted, open 'C:\\Users\\kumar\\Desktop\\Angular\\ponyracer\\cypress\\screenshots\\spec.ts\\My First Test -- Visits the initial project page (failed).png'\n\n",
                 "diff": null
               },
-              "uuid": "bf769fa0-4979-4738-b34b-491f73f5655e",
-              "parentUUID": "bb82fd9e-1ce3-4801-9c01-d3b776a9503a",
+              "uuid": "564bd19b-ddf2-470d-94a0-26deb1a913b9",
+              "parentUUID": "e07e12fe-1012-4681-9116-7f97dd235ac3",
               "isHook": false,
               "skipped": false
             }
@@ -60,11 +60,11 @@
           "suites": [],
           "passes": [],
           "failures": [
-            "bf769fa0-4979-4738-b34b-491f73f5655e"
+            "564bd19b-ddf2-470d-94a0-26deb1a913b9"
           ],
           "pending": [],
           "skipped": [],
-          "duration": 16201,
+          "duration": 6335,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000
