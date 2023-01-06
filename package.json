@@ -7,48 +7,79 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "lint": "ng lint",
     "e2e": "ng e2e",
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run",
-    "lint": "ng lint"
+    "ng2ninja": "ng2ninja",
+    "format": "prettier --write \"{src,cypress}/**/*.+(ts|js|json|html|css)\"",
+    "postinstall": "npm run format"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^15.0.0",
-    "@angular/common": "^15.0.0",
-    "@angular/compiler": "^15.0.0",
-    "@angular/core": "^15.0.0",
-    "@angular/forms": "^15.0.0",
-    "@angular/platform-browser": "^15.0.0",
-    "@angular/platform-browser-dynamic": "^15.0.0",
-    "@angular/router": "^15.0.0",
+    "@angular/animations": "15.0.0",
+    "@angular/common": "15.0.0",
+    "@angular/compiler": "15.0.0",
+    "@angular/core": "15.0.0",
+    "@angular/forms": "15.0.0",
+    "@angular/platform-browser": "15.0.0",
+    "@angular/platform-browser-dynamic": "15.0.0",
+    "@angular/router": "15.0.0",
     "bootstrap": "5.2.2",
     "font-awesome": "4.7.0",
-    "rxjs": "~7.5.0",
-    "tslib": "^2.3.0",
-    "zone.js": "~0.12.0"
+    "rxjs": "7.5.7",
+    "tslib": "2.4.1",
+    "zone.js": "0.12.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^15.0.0",
+    "@angular-devkit/build-angular": "15.0.0",
     "@angular-eslint/builder": "14.2.0",
     "@angular-eslint/eslint-plugin": "14.2.0",
     "@angular-eslint/eslint-plugin-template": "14.2.0",
-    "@angular-eslint/schematics": "14.2.0",
     "@angular-eslint/template-parser": "14.2.0",
-    "@angular/cli": "~15.0.0",
-    "@angular/compiler-cli": "^15.0.0",
-    "@cypress/schematic": "^2.3.0",
-    "@types/jasmine": "~4.3.0",
+    "@angular/cli": "15.0.0",
+    "@angular/compiler-cli": "15.0.0",
+    "@angular/localize": "15.0.0",
+    "@cypress/schematic": "2.3.0",
+    "@types/jasmine": "4.3.0",
     "@typescript-eslint/eslint-plugin": "5.43.0",
     "@typescript-eslint/parser": "5.43.0",
-    "cypress": "latest",
-    "eslint": "^8.27.0",
-    "jasmine-core": "~4.5.0",
-    "karma": "~6.4.0",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-coverage": "~2.2.0",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.0.0",
-    "typescript": "~4.8.2"
+    "cypress": "11.1.0",
+    "eslint": "8.27.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-deprecation": "1.3.3",
+    "eslint-plugin-prettier": "4.2.1",
+    "jasmine-core": "4.5.0",
+    "karma": "6.4.1",
+    "karma-chrome-launcher": "3.1.1",
+    "karma-coverage": "2.2.0",
+    "karma-firefox-launcher": "2.1.2",
+    "karma-jasmine": "5.1.0",
+    "karma-jasmine-html-reporter": "2.0.0",
+    "karma-json-reporter": "1.2.1",
+    "karma-mocha-reporter": "2.2.5",
+    "mochawesome": "7.1.3",
+    "mochawesome-merge": "4.2.1",
+    "ng2ninja": "4.0.0-beta.1",
+    "prettier": "2.7.1",
+    "typescript": "4.8.4"
+  },
+  "prettier": {
+    "printWidth": 140,
+    "singleQuote": true,
+    "arrowParens": "avoid",
+    "trailingComma": "none",
+    "overrides": [
+      {
+        "files": "*.component.html",
+        "options": {
+          "parser": "angular"
+        }
+      },
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "html"
+        }
+      }
+    ]
   }
 }
