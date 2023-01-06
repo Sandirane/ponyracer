@@ -2,6 +2,8 @@ describe('Ponyracer', () => {
   it('should display title on home page', () => {
     cy.visit('/');
     cy.contains('h1', 'Ponyracer');
+    cy.contains('small', 'Always a pleasure to bet on ponies');
+    cy.get('.btn-primary').contains('Races').should('have.attr', 'href', '/races');
   });
 
   const navbarBrand = '.navbar-brand';
@@ -9,8 +11,8 @@ describe('Ponyracer', () => {
 
   it('should display a navbar', () => {
     cy.visit('/');
-    cy.contains(navbarBrand, 'PonyRacer');
-    cy.contains(navbarLink, 'Races');
+    cy.get(navbarBrand).contains('PonyRacer').should('have.attr', 'href', '/');
+    cy.get(navbarLink).contains('Races').should('have.attr', 'href', '/races');
   });
 
   it('should display a navbar collapsed on small screen', () => {
@@ -22,18 +24,5 @@ describe('Ponyracer', () => {
     // toggle the navbar
     cy.get('.navbar-toggler').click();
     cy.get(navbarLink).should('be.visible');
-  });
-
-  it('should display a race list', () => {
-    cy.visit('/');
-    cy.get('h2').should('have.length', 2);
-    cy.get('p').should('have.length', 2).and('contain', 'ago');
-  });
-
-  it('should display ponies', () => {
-    cy.visit('/');
-    cy.get('figure').should('have.length', 10);
-    cy.get('img').should('have.length', 10);
-    cy.get('figcaption').should('have.length', 10);
   });
 });
