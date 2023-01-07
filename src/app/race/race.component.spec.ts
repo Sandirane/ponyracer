@@ -2,14 +2,14 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { formatDistanceToNowStrict, parseISO } from 'date-fns';
 
+import { RacesModule } from '../races/races.module';
 import { RaceComponent } from './race.component';
 import { PonyComponent } from '../pony/pony.component';
-import { FromNowPipe } from '../from-now.pipe';
 
 describe('RaceComponent', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
-      declarations: [RaceComponent, PonyComponent, FromNowPipe]
+      imports: [RacesModule]
     })
   );
 

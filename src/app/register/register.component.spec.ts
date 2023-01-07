@@ -1,10 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { of, throwError } from 'rxjs';
 
+import { UsersModule } from '../users/users.module';
 import { RegisterComponent } from './register.component';
 import { UserService } from '../user.service';
 import { UserModel } from '../models/user.model';
@@ -15,8 +16,7 @@ describe('RegisterComponent', () => {
   beforeEach(() => {
     userService = jasmine.createSpyObj<UserService>('UserService', ['register']);
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, RouterTestingModule],
-      declarations: [RegisterComponent],
+      imports: [UsersModule, RouterTestingModule],
       providers: [{ provide: UserService, useValue: userService }]
     });
   });

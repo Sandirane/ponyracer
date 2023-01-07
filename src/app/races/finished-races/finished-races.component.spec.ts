@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
 
 import { FinishedRacesComponent } from './finished-races.component';
+import { RacesModule } from '../races.module';
 import { RaceComponent } from '../../race/race.component';
 
 describe('FinishedRacesComponent', () => {
@@ -17,7 +18,7 @@ describe('FinishedRacesComponent', () => {
   beforeEach(() => {
     TestBed.overrideTemplate(RaceComponent, '<h2>Race</h2>');
     TestBed.configureTestingModule({
-      declarations: [FinishedRacesComponent, RaceComponent],
+      imports: [RacesModule],
       providers: [{ provide: ActivatedRoute, useValue: activatedRoute }]
     });
   });

@@ -1,9 +1,9 @@
 import { fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
 
+import { UsersModule } from '../users/users.module';
 import { LoginComponent } from './login.component';
 import { UserService } from '../user.service';
 import { UserModel } from '../models/user.model';
@@ -14,8 +14,7 @@ describe('LoginComponent', () => {
   beforeEach(() => {
     userService = jasmine.createSpyObj<UserService>('UserService', ['authenticate']);
     TestBed.configureTestingModule({
-      imports: [FormsModule, RouterTestingModule],
-      declarations: [LoginComponent],
+      imports: [UsersModule, RouterTestingModule],
       providers: [{ provide: UserService, useValue: userService }]
     });
   });

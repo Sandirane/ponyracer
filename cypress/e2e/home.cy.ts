@@ -85,8 +85,8 @@ describe('Ponyracer', () => {
     cy.visit('/');
     cy.contains('h1', 'Ponyracer');
     cy.contains('small', 'Always a pleasure to bet on ponies');
-    cy.get('.btn-primary').contains('Login').should('have.attr', 'href', '/login');
-    cy.get('.btn-primary').contains('Register').should('have.attr', 'href', '/register');
+    cy.get('.btn-primary').contains('Login').should('have.attr', 'href', '/users/login');
+    cy.get('.btn-primary').contains('Register').should('have.attr', 'href', '/users/register');
   });
 
   const navbarBrand = '.navbar-brand';
@@ -154,6 +154,6 @@ describe('Ponyracer', () => {
     cy.get('#current-user').should('not.exist');
 
     // and home page offers the login link
-    cy.get('.btn-primary').contains('Login').should('have.attr', 'href', '/login');
+    cy.get('.btn-primary').contains('Login').should('have.attr', 'href', '/users/login');
   });
 });

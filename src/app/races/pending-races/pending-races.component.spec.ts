@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
 
 import { PendingRacesComponent } from './pending-races.component';
+import { RacesModule } from '../races.module';
 import { RaceComponent } from '../../race/race.component';
 
 describe('PendingRacesComponent', () => {
@@ -18,8 +19,7 @@ describe('PendingRacesComponent', () => {
   beforeEach(() => {
     TestBed.overrideTemplate(RaceComponent, '<h2>Race</h2>');
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [PendingRacesComponent, RaceComponent],
+      imports: [RacesModule, RouterTestingModule],
       providers: [{ provide: ActivatedRoute, useValue: activatedRoute }]
     });
   });

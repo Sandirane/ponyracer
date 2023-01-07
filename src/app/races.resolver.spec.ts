@@ -6,7 +6,8 @@ import { RacesResolver } from './races.resolver';
 import { RaceService } from './race.service';
 import { RaceModel } from './models/race.model';
 import { AppModule } from './app.module';
-import { LoggedInGuard } from './logged-in.guard';
+import { RacesModule } from './races/races.module';
+import { RACES_ROUTES } from './races/races.routes';
 import { AppComponent } from './app.component';
 
 describe('RacesResolver', () => {
@@ -14,11 +15,12 @@ describe('RacesResolver', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [AppModule]
+      imports: [AppModule, RacesModule]
     });
 
-    const loggedInGuard = TestBed.inject(LoggedInGuard);
-    spyOn(loggedInGuard, 'canActivate').and.returnValue(true);
+    // override the lazy loaded module
+    const router = TestBed.inject(Router);
+    router.resetConfig([{ path: 'races', children: RACES_ROUTES }]);
 
     appComponentFixture = TestBed.createComponent(AppComponent);
     appComponentFixture.detectChanges();

@@ -4,12 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { Subject, of, EMPTY } from 'rxjs';
 
+import { RacesModule } from '../races/races.module';
 import { LiveComponent } from './live.component';
 import { RaceService } from '../race.service';
 import { PonyWithPositionModel } from '../models/pony.model';
 import { RaceModel } from '../models/race.model';
 import { PonyComponent } from '../pony/pony.component';
-import { FromNowPipe } from '../from-now.pipe';
 
 describe('LiveComponent', () => {
   let raceService: jasmine.SpyObj<RaceService>;
@@ -25,8 +25,7 @@ describe('LiveComponent', () => {
     raceService = jasmine.createSpyObj<RaceService>('RaceService', ['live', 'boost']);
     const activatedRoute = { snapshot: { data: { race: { ...race } } } };
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [LiveComponent, PonyComponent, FromNowPipe],
+      imports: [RacesModule, RouterTestingModule],
       providers: [
         { provide: RaceService, useValue: raceService },
         { provide: ActivatedRoute, useValue: activatedRoute }
