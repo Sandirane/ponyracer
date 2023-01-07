@@ -1,12 +1,14 @@
 import { fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
+import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 
 import { UsersModule } from '../users/users.module';
 import { LoginComponent } from './login.component';
 import { UserService } from '../user.service';
 import { UserModel } from '../models/user.model';
+import { AlertComponent } from '../shared/alert/alert.component';
 
 describe('LoginComponent', () => {
   let userService: jasmine.SpyObj<UserService>;
@@ -132,7 +134,6 @@ describe('LoginComponent', () => {
     const router = TestBed.inject(Router);
     spyOn(router, 'navigateByUrl');
     const fixture = TestBed.createComponent(LoginComponent);
-
     fixture.detectChanges();
 
     const subject = new Subject<UserModel>();
@@ -195,10 +196,17 @@ describe('LoginComponent', () => {
 
     fixture.detectChanges();
 
-    const element = fixture.nativeElement;
-    expect(element.querySelector('.alert'))
-      .withContext('You should have a div with a class `alert` to display an error message')
-      .not.toBeNull();
-    expect(element.querySelector('.alert').textContent).toContain('Nope, try again');
+    const element = fixture.debugElement;
+    const alert = element.query(By.directive(AlertComponent));
+    expect(alert).withContext('You should have an AlertComponent to display an error message').not.toBeNull();
+    expect(alert.nativeElement.textContent).toContain('Nope, try again');
+    expect(alert.componentInstance.type).withContext('The alert should be a danger one').toBe('danger');
+
+    // close the alert
+    alert.componentInstance.closeHandler();
+    fixture.detectChanges();
+    expect(element.query(By.directive(AlertComponent)))
+      .withContext('The alert should disappear when closed')
+      .toBeNull();
   });
 });

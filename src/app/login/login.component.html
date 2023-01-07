@@ -2,10 +2,7 @@
   <div class="col-md-6 offset-md-3">
     <h1>Log in</h1>
 
-    <div class="alert alert-danger" *ngIf="authenticationFailed">
-      <button type="button" class="btn-close" aria-label="Close" (click)="authenticationFailed = false"></button>
-      Nope, try again.
-    </div>
+    <pr-alert *ngIf="authenticationFailed" type="danger" (closed)="authenticationFailed = false">Nope, try again.</pr-alert>
 
     <form (ngSubmit)="authenticate()" #loginForm="ngForm">
       <div class="mb-3">

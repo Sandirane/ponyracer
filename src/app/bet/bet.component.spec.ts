@@ -11,6 +11,7 @@ import { BetComponent } from './bet.component';
 import { PonyComponent } from '../pony/pony.component';
 import { RaceModel } from '../models/race.model';
 import { PonyModel } from '../models/pony.model';
+import { AlertComponent } from '../shared/alert/alert.component';
 
 describe('BetComponent', () => {
   let raceService: jasmine.SpyObj<RaceService>;
@@ -148,16 +149,18 @@ describe('BetComponent', () => {
 
     fixture.detectChanges();
 
-    const element = fixture.nativeElement;
-    const message = element.querySelector('.alert.alert-danger');
-    expect(message.textContent).toContain('The race is already started or finished');
+    const debugElement = fixture.debugElement;
+    const message = debugElement.query(By.directive(AlertComponent));
+    expect(message).withContext('You should have an AlertComponent if the bet failed').not.toBeNull();
+    expect(message.nativeElement.textContent).toContain('The race is already started or finished');
+    expect(message.componentInstance.type).withContext('The alert should be a danger one').toBe('danger');
 
     // close the alert
-    const alertButton = message.querySelector('button');
-    expect(alertButton).withContext('The message should have a close button').not.toBeNull();
-    alertButton.dispatchEvent(new Event('click'));
+    message.componentInstance.closeHandler();
     fixture.detectChanges();
-    expect(element.querySelector('.alert.alert-danger')).withContext('Clicking on the button should close the alert').toBeNull();
+    expect(debugElement.query(By.directive(AlertComponent)))
+      .withContext('The AlertComponent should be closable')
+      .toBeNull();
   });
 
   it('should cancel a bet', () => {

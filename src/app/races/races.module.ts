@@ -11,9 +11,10 @@ import { RaceComponent } from '../race/race.component';
 import { RacesComponent } from './races.component';
 import { RouterModule } from '@angular/router';
 import { RACES_ROUTES } from './races.routes';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [CommonModule, RouterModule.forChild(RACES_ROUTES)],
+  imports: [CommonModule, RouterModule.forChild(RACES_ROUTES), SharedModule],
   declarations: [
     RacesComponent,
     RaceComponent,
