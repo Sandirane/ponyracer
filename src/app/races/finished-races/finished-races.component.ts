@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class FinishedRacesComponent {
   races: Array<RaceModel>;
+  page = 1;
 
   constructor(route: ActivatedRoute) {
     this.races = route.snapshot.data['races'];

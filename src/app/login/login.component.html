@@ -2,17 +2,17 @@
   <div class="col-md-6 offset-md-3">
     <h1>Log in</h1>
 
-    <pr-alert *ngIf="authenticationFailed" type="danger" (closed)="authenticationFailed = false">Nope, try again.</pr-alert>
+    <ngb-alert *ngIf="authenticationFailed" type="danger" (closed)="authenticationFailed = false">Nope, try again.</ngb-alert>
 
     <form (ngSubmit)="authenticate()" #loginForm="ngForm">
-      <div class="mb-3">
-        <label for="login" class="form-label">Login</label>
+      <div class="mb-3" prFormLabelValidation>
+        <label for="login" class="form-label" prFormLabel>Login</label>
         <input id="login" class="form-control" name="login" [(ngModel)]="credentials.login" required #loginCtrl="ngModel" />
-        <div *ngIf="loginCtrl.dirty && loginCtrl.hasError('required')">Login is required</div>
+        <div *ngIf="loginCtrl.dirty && loginCtrl.hasError('required')" class="invalid-feedback">Login is required</div>
       </div>
 
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
+      <div class="mb-3" prFormLabelValidation>
+        <label for="password" class="form-label" prFormLabel>Password</label>
         <input
           id="password"
           class="form-control"
@@ -22,7 +22,7 @@
           required
           #passwordCtrl="ngModel"
         />
-        <div *ngIf="passwordCtrl.dirty && passwordCtrl.hasError('required')">Password is required</div>
+        <div *ngIf="passwordCtrl.dirty && passwordCtrl.hasError('required')" class="invalid-feedback">Password is required</div>
       </div>
 
       <button class="btn btn-primary" type="submit" [disabled]="loginForm.invalid">Log me in!</button>

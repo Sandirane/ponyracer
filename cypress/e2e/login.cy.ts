@@ -13,7 +13,7 @@ describe('Login', () => {
 
   const loginInput = () => cy.get('input').first();
   const passwordInput = () => cy.get('input[type=password]');
-  const errorMessage = () => cy.get('.mb-3 div');
+  const errorMessage = () => cy.get('.invalid-feedback');
   const submitButton = () => cy.get('form > button');
 
   beforeEach(() => startBackend());

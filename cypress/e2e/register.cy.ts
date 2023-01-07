@@ -20,7 +20,7 @@ describe('Register', () => {
     const passwordInput = () => cy.get('input[type=password]').first();
     const confirmInput = () => cy.get('input[type=password]').eq(1);
     const birthYearInput = () => cy.get('input[type=number]');
-    const errorMessage = () => cy.get('.mb-3 div');
+    const errorMessage = () => cy.get('.invalid-feedback');
 
     cy.get('button').should('be.visible').and('be.disabled');
     loginInput().type('c');
@@ -33,7 +33,6 @@ describe('Register', () => {
     passwordInput().clear();
     errorMessage().should('be.visible').and('contain', 'Password is required');
     passwordInput().type('pa');
-    errorMessage().should('not.exist');
 
     confirmInput().type('p');
     confirmInput().clear();

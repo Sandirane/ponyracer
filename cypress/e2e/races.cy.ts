@@ -103,5 +103,6 @@ describe('Races', () => {
 
     cy.get('h2').should('have.length', 1);
     cy.get('p').should('have.length', 1).and('contain', 'ago');
+    cy.get('a.page-link').should('have.length', 3).and('contain', '1');
   });
 });
