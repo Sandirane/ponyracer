@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 import { environment } from '../environments/environment';
 import { UserModel } from './models/user.model';
+import { WsService } from './ws.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import { UserModel } from './models/user.model';
 export class UserService {
   userEvents = new BehaviorSubject<UserModel | null>(null);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private wsService: WsService) {
     this.retrieveUser();
   }
 
@@ -46,5 +47,9 @@ export class UserService {
 
   getCurrentUser(): UserModel | null {
     return this.userEvents.getValue();
+  }
+
+  scoreUpdates(userId: number): Observable<UserModel> {
+    return this.wsService.connect<UserModel>(`/player/${userId}`);
   }
 }

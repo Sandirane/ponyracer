@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, takeWhile } from 'rxjs';
+import { Observable, map, takeWhile } from 'rxjs';
 
 import { environment } from '../environments/environment';
 import { WsService } from './ws.service';
@@ -13,8 +13,8 @@ import { PonyWithPositionModel } from './models/pony.model';
 export class RaceService {
   constructor(private http: HttpClient, private wsService: WsService) {}
 
-  list(): Observable<Array<RaceModel>> {
-    const params = { status: 'PENDING' };
+  list(status: 'PENDING' | 'RUNNING' | 'FINISHED'): Observable<Array<RaceModel>> {
+    const params = { status };
     return this.http.get<Array<RaceModel>>(`${environment.baseUrl}/api/races`, { params });
   }
 

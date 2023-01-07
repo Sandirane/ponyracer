@@ -12,6 +12,14 @@ describe('Races', () => {
     startInstant: '2020-02-18T08:02:00Z'
   };
 
+  const user = {
+    id: 1,
+    login: 'cedric',
+    money: 1000,
+    registrationInstant: '2015-12-01T11:00:00Z',
+    token: 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjF9.5cAW816GUAg3OWKWlsYyXI4w3fDrS5BpnmbyBjVM7lo'
+  };
+
   function startBackend(): void {
     cy.intercept('GET', 'api/races?status=PENDING', [
       race,
@@ -27,23 +35,73 @@ describe('Races', () => {
         ],
         startInstant: '2020-02-18T08:03:00Z'
       }
-    ]).as('getRaces');
+    ]).as('getPendingRaces');
+    cy.intercept('GET', 'api/races?status=FINISHED', [
+      {
+        id: 14,
+        name: 'Tokyo',
+        ponies: [
+          { id: 11, name: 'Fast Rainbow', color: 'YELLOW' },
+          { id: 12, name: 'Gentle Castle', color: 'ORANGE' },
+          { id: 13, name: 'Awesome Rock', color: 'PURPLE' },
+          { id: 14, name: 'Little Rainbow', color: 'BLUE' },
+          { id: 15, name: 'Great Soda', color: 'GREEN' }
+        ],
+        startInstant: '2020-02-18T08:01:00Z'
+      }
+    ]).as('getFinishedRaces');
+  }
+
+  function storeUserInLocalStorage(): void {
+    localStorage.setItem('rememberMe', JSON.stringify(user));
   }
 
   beforeEach(() => startBackend());
 
-  it('should display a race list', () => {
+  it('should display a list of pending races by default', () => {
     cy.visit('/races');
-    cy.wait('@getRaces');
+    // should redirect to home page as the user is not logged
+    cy.location('pathname')
+      .should('eq', '/')
+      .then(
+        // log the user and try again
+        () => storeUserInLocalStorage()
+      );
+    cy.visit('/races');
+    cy.location('pathname').should('eq', '/races/pending');
+    cy.wait('@getPendingRaces');
     cy.get('h2').should('have.length', 2);
     cy.get('p').should('have.length', 2).and('contain', 'ago');
   });
 
   it('should display ponies', () => {
+    storeUserInLocalStorage();
     cy.visit('/races');
-    cy.wait('@getRaces');
+    cy.wait('@getPendingRaces');
     cy.get('figure').should('have.length', 10);
     cy.get('img').should('have.length', 10);
     cy.get('figcaption').should('have.length', 10);
+  });
+
+  it('should display a list of finished races in another tab', () => {
+    storeUserInLocalStorage();
+    cy.visit('/races/pending');
+    cy.wait('@getPendingRaces');
+
+    const pendingRacesTab = () => cy.get('.nav-tabs .nav-link').first();
+    const finishedRacesTab = () => cy.get('.nav-tabs .nav-link').eq(1);
+
+    pendingRacesTab().should('have.class', 'active').and('contain', 'Pending races');
+    finishedRacesTab().should('not.have.class', 'active').and('contain', 'Finished races');
+    finishedRacesTab().click();
+
+    cy.location('pathname').should('eq', '/races/finished');
+    cy.wait('@getFinishedRaces');
+
+    pendingRacesTab().should('not.have.class', 'active');
+    finishedRacesTab().should('have.class', 'active');
+
+    cy.get('h2').should('have.length', 1);
+    cy.get('p').should('have.length', 1).and('contain', 'ago');
   });
 });

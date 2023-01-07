@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { of, throwError } from 'rxjs';
 import { formatDistanceToNowStrict, parseISO } from 'date-fns';
@@ -15,11 +15,10 @@ import { PonyModel } from '../models/pony.model';
 describe('BetComponent', () => {
   let raceService: jasmine.SpyObj<RaceService>;
   const race = { id: 1, name: 'Paris', startInstant: '2020-02-18T08:02:00Z' } as RaceModel;
-  const activatedRoute = { snapshot: { paramMap: convertToParamMap({ raceId: 1 }) } };
 
   beforeEach(() => {
-    raceService = jasmine.createSpyObj<RaceService>('RaceService', ['get', 'bet', 'cancelBet']);
-    raceService.get.and.returnValue(of(race));
+    raceService = jasmine.createSpyObj<RaceService>('RaceService', ['bet', 'cancelBet']);
+    const activatedRoute = { snapshot: { data: { race } } };
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [BetComponent, PonyComponent, FromNowPipe],
@@ -131,15 +130,12 @@ describe('BetComponent', () => {
   });
 
   it('should initialize the race', () => {
-    activatedRoute.snapshot.paramMap = convertToParamMap({ raceId: 1 });
     const fixture = TestBed.createComponent(BetComponent);
     const component = fixture.componentInstance;
     expect(component.raceModel).withContext('The component should initialize the `raceModel`').toBe(race);
-    expect(raceService.get).toHaveBeenCalledWith(1);
   });
 
   it('should display an error message if bet failed', () => {
-    activatedRoute.snapshot.paramMap = convertToParamMap({ raceId: 1 });
     const fixture = TestBed.createComponent(BetComponent);
     raceService.bet.and.callFake(() => throwError(() => new Error('Oops')));
 

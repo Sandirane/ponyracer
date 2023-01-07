@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { catchError, concat, EMPTY, of, Subscription, switchMap } from 'rxjs';
 
 import { UserModel } from '../models/user.model';
 import { UserService } from '../user.service';
@@ -17,7 +17,9 @@ export class MenuComponent implements OnDestroy {
   userEventsSubscription: Subscription | null = null;
 
   constructor(private userService: UserService, private router: Router) {
-    this.userEventsSubscription = this.userService.userEvents.subscribe(user => (this.user = user));
+    this.userEventsSubscription = this.userService.userEvents
+      .pipe(switchMap(user => (user ? concat(of(user), this.userService.scoreUpdates(user.id).pipe(catchError(() => EMPTY))) : of(null))))
+      .subscribe(userWithScore => (this.user = userWithScore));
   }
 
   ngOnDestroy(): void {
