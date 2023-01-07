@@ -1,17 +1,22 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { Subject } from 'rxjs';
 
 import { environment } from '../environments/environment';
 import { RaceService } from './race.service';
+import { WsService } from './ws.service';
 import { RaceModel } from './models/race.model';
+import { PonyWithPositionModel } from './models/pony.model';
 
 describe('RaceService', () => {
   let raceService: RaceService;
   let http: HttpTestingController;
+  const wsService = jasmine.createSpyObj<WsService>('WsService', ['connect']);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule],
+      providers: [{ provide: WsService, useValue: wsService }]
     });
     raceService = TestBed.inject(RaceService);
     http = TestBed.inject(HttpTestingController);
@@ -70,5 +75,49 @@ describe('RaceService', () => {
     http.expectOne({ method: 'DELETE', url: `${environment.baseUrl}/api/races/${raceId}/bets` }).flush(null);
 
     expect(called).toBe(true);
+  });
+
+  it('should return live positions from websockets', () => {
+    const raceId = 1;
+    const messages = new Subject<{
+      status: 'PENDING' | 'RUNNING' | 'FINISHED';
+      ponies: Array<PonyWithPositionModel>;
+    }>();
+    let positions: Array<PonyWithPositionModel> = [];
+
+    wsService.connect.and.returnValue(messages);
+
+    raceService.live(raceId).subscribe(pos => {
+      positions = pos;
+    });
+
+    expect(wsService.connect).toHaveBeenCalledWith(`/race/${raceId}`);
+
+    messages.next({
+      status: 'RUNNING',
+      ponies: [
+        {
+          id: 1,
+          name: 'Superb Runner',
+          color: 'BLUE',
+          position: 1
+        }
+      ]
+    });
+
+    messages.next({
+      status: 'RUNNING',
+      ponies: [
+        {
+          id: 1,
+          name: 'Superb Runner',
+          color: 'BLUE',
+          position: 100
+        }
+      ]
+    });
+
+    expect(positions.length).toBe(1);
+    expect(positions[0].position).toBe(100);
   });
 });
