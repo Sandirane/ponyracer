@@ -1,0 +1,105 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2023-01-07T16:20:50.712Z",
+    "end": "2023-01-07T16:20:52.625Z",
+    "duration": 1913,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "55087d76-6663-4344-b521-1c8143eb6837",
+      "title": "",
+      "fullFile": "cypress\\e2e\\bet.cy.ts",
+      "file": "cypress\\e2e\\bet.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "f9b4d602-f4ff-4a29-9559-923e1607e850",
+          "title": "Bet",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should bet on ponies and cancel",
+              "fullTitle": "Bet should bet on ponies and cancel",
+              "timedOut": null,
+              "duration": 1902,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "storeUserInLocalStorage();\ncy.visit('/races');\ncy.wait('@getRaces');\n// go to bet page for the first race\ncy.get('.btn-primary').first().click();\ncy.wait('@getRace').its('request.headers').should('have.property', 'authorization', `Bearer ${user.token}`);\ncy.location('pathname').should('eq', '/races/12');\n// race detail should be displayed\ncy.get('h1').should('contain', 'Paris');\ncy.get('p').should('contain', 'ago');\ncy.get('img').should('have.length', 5);\n// no pony is selected\ncy.get('.selected').should('have.length', 0);\n// bet on first pony\ncy.get('img').first().click();\ncy.wait('@betRace').its('request.body').should('contain', { ponyId: 1 });\n// a pony is now selected\ncy.get('.selected').should('have.length', 1);\n// bet on the second one\ncy.intercept('POST', 'api/races/12/bets', { ...race, betPonyId: 2 }).as('secondBetRace');\ncy.get('img').eq(1).click();\ncy.wait('@secondBetRace').its('request.body').should('contain', { ponyId: 2 });\n// a pony is still selected\ncy.get('.selected').should('have.length', 1);\n// cancel fails\ncy.intercept('DELETE', 'api/races/12/bets', {\n    statusCode: 404\n}).as('failedCancelBetRace');\n// cancel bet on second pony\ncy.get('img').eq(1).click();\ncy.wait('@failedCancelBetRace');\n// alert should be displayed\ncy.get('.alert').should('contain', 'The race is already started or finished');\n// close alert\ncy.get('.alert button').click();\ncy.get('.alert').should('not.exist');\n// bet fails\ncy.intercept('POST', 'api/races/12/bets', {\n    statusCode: 404\n}).as('failedBetRace');\n// bet on first pony\ncy.get('img').first().click();\ncy.wait('@failedBetRace');\n// alert should be displayed\ncy.get('.alert').should('contain', 'The race is already started or finished');\n// close alert\ncy.get('.alert button').click();\ncy.get('.alert').should('not.exist');\ncy.intercept('DELETE', 'api/races/12/bets', {}).as('cancelBetRace');\n// cancel bet\ncy.get('img').eq(1).click();\ncy.wait('@cancelBetRace');\n// no pony is selected anymore\ncy.get('.selected').should('have.length', 0);",
+              "err": {},
+              "uuid": "c20f64dd-be89-4e70-88ce-c73bdaec9d03",
+              "parentUUID": "f9b4d602-f4ff-4a29-9559-923e1607e850",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "c20f64dd-be89-4e70-88ce-c73bdaec9d03"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 1902,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "results/mochawesome",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}

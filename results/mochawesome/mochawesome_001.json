@@ -1,0 +1,162 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 4,
+    "passes": 4,
+    "pending": 0,
+    "failures": 0,
+    "start": "2023-01-07T16:20:53.611Z",
+    "end": "2023-01-07T16:20:54.559Z",
+    "duration": 948,
+    "testsRegistered": 4,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "73ad7f20-1475-4283-b544-e7029c5366ef",
+      "title": "",
+      "fullFile": "cypress\\e2e\\home.cy.ts",
+      "file": "cypress\\e2e\\home.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "6c866ed5-13d9-432a-9b48-3b6d8129c616",
+          "title": "Ponyracer",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should display title on home page",
+              "fullTitle": "Ponyracer should display title on home page",
+              "timedOut": null,
+              "duration": 364,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('/');\ncy.contains('h1', 'Ponyracer');\ncy.contains('small', 'Always a pleasure to bet on ponies');\ncy.get('.btn-primary').contains('Login').should('have.attr', 'href', '/login');\ncy.get('.btn-primary').contains('Register').should('have.attr', 'href', '/register');",
+              "err": {},
+              "uuid": "c691ae66-fd56-4edf-aedd-82151a0913a0",
+              "parentUUID": "6c866ed5-13d9-432a-9b48-3b6d8129c616",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should display a navbar",
+              "fullTitle": "Ponyracer should display a navbar",
+              "timedOut": null,
+              "duration": 127,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('/');\ncy.get(navbarBrand).contains('PonyRacer').should('have.attr', 'href', '/');\ncy.get(navbarLink).should('not.exist');",
+              "err": {},
+              "uuid": "6da4a355-909e-4472-8d3b-c06951ad2feb",
+              "parentUUID": "6c866ed5-13d9-432a-9b48-3b6d8129c616",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should display a navbar collapsed on small screen",
+              "fullTitle": "Ponyracer should display a navbar collapsed on small screen",
+              "timedOut": null,
+              "duration": 192,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "storeUserInLocalStorage();\ncy.viewport('iphone-6+');\ncy.visit('/');\ncy.contains(navbarBrand, 'PonyRacer');\ncy.get(navbarLink).should('not.be.visible');\n// toggle the navbar\ncy.get('.navbar-toggler').click();\ncy.get(navbarLink).should('exist');",
+              "err": {},
+              "uuid": "3831b173-73dc-4de7-a64c-74430738504b",
+              "parentUUID": "6c866ed5-13d9-432a-9b48-3b6d8129c616",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should log out the user",
+              "fullTitle": "Ponyracer should log out the user",
+              "timedOut": null,
+              "duration": 237,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "storeUserInLocalStorage();\ncy.visit('/races');\ncy.wait('@getRaces').its('request.headers').should('have.property', 'authorization', `Bearer ${user.token}`);\n// user stored should be displayed\ncy.get('#current-user').should('contain', 'cedric').and('contain', '1000');\n// logout\ncy.get('span.fa.fa-power-off').click();\n// should be redirected to home page\ncy.location('pathname')\n    .should('eq', '/')\n    // and localStorage should be clean\n    .and(() => expect(localStorage.getItem('rememberMe')).to.eq(null));\ncy.get(navbarLink).should('not.exist');\n// user is not displayed in navbar\ncy.get('#current-user').should('not.exist');\n// and home page offers the login link\ncy.get('.btn-primary').contains('Login').should('have.attr', 'href', '/login');",
+              "err": {},
+              "uuid": "97f8354d-9c33-444c-a965-bc0f5540b3e5",
+              "parentUUID": "6c866ed5-13d9-432a-9b48-3b6d8129c616",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "c691ae66-fd56-4edf-aedd-82151a0913a0",
+            "6da4a355-909e-4472-8d3b-c06951ad2feb",
+            "3831b173-73dc-4de7-a64c-74430738504b",
+            "97f8354d-9c33-444c-a965-bc0f5540b3e5"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 920,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "results/mochawesome",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}

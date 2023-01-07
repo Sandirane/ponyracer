@@ -1,0 +1,124 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 2,
+    "passes": 2,
+    "pending": 0,
+    "failures": 0,
+    "start": "2023-01-07T16:20:58.382Z",
+    "end": "2023-01-07T16:21:00.057Z",
+    "duration": 1675,
+    "testsRegistered": 2,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "510a19ae-6a82-4596-99cb-3406ea0b5443",
+      "title": "",
+      "fullFile": "cypress\\e2e\\login.cy.ts",
+      "file": "cypress\\e2e\\login.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "156aa479-8ee5-4cd5-95cd-b5bb2eb362bd",
+          "title": "Login",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should display a login page",
+              "fullTitle": "Login should display a login page",
+              "timedOut": null,
+              "duration": 1114,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('/login');\ncy.get('button').should('be.visible').and('be.disabled');\nloginInput().type('c');\nloginInput().clear();\nerrorMessage().should('be.visible').and('contain', 'Login is required');\nloginInput().type('ced');\nerrorMessage().should('not.exist');\npasswordInput().type('p');\npasswordInput().clear();\nerrorMessage().should('be.visible').and('contain', 'Password is required');\npasswordInput().type('pa');\nerrorMessage().should('not.exist');\nsubmitButton().click();\ncy.wait('@authenticateUser');\ncy.location('pathname').should('eq', '/');",
+              "err": {},
+              "uuid": "00ff119b-ff45-4747-9a63-cc5f50af1562",
+              "parentUUID": "156aa479-8ee5-4cd5-95cd-b5bb2eb362bd",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should display an alert if login fails",
+              "fullTitle": "Login should display an alert if login fails",
+              "timedOut": null,
+              "duration": 536,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('/login');\ncy.intercept('POST', 'api/users/authentication', {\n    statusCode: 404\n}).as('failedAuthenticateUser');\nloginInput().type('ced');\npasswordInput().type('pa');\nsubmitButton().click();\ncy.wait('@failedAuthenticateUser');\ncy.location('pathname').should('eq', '/login');\ncy.get('.alert-danger').should('contain', 'Nope, try again');",
+              "err": {},
+              "uuid": "b981e1c2-178a-4586-ad4f-c426ccce8de3",
+              "parentUUID": "156aa479-8ee5-4cd5-95cd-b5bb2eb362bd",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "00ff119b-ff45-4747-9a63-cc5f50af1562",
+            "b981e1c2-178a-4586-ad4f-c426ccce8de3"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 1650,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "results/mochawesome",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}

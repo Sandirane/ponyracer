@@ -1,0 +1,124 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 2,
+    "passes": 2,
+    "pending": 0,
+    "failures": 0,
+    "start": "2023-01-07T16:21:01.025Z",
+    "end": "2023-01-07T16:21:01.565Z",
+    "duration": 540,
+    "testsRegistered": 2,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "d8a0fb16-3739-4c1d-ad9b-e97b863d011b",
+      "title": "",
+      "fullFile": "cypress\\e2e\\races.cy.ts",
+      "file": "cypress\\e2e\\races.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "75a68a64-a878-4229-852a-9b2b6f58e045",
+          "title": "Races",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should display a race list",
+              "fullTitle": "Races should display a race list",
+              "timedOut": null,
+              "duration": 335,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('/races');\ncy.wait('@getRaces');\ncy.get('h2').should('have.length', 2);\ncy.get('p').should('have.length', 2).and('contain', 'ago');",
+              "err": {},
+              "uuid": "213a3452-a988-4641-8bce-2e3f388d3eff",
+              "parentUUID": "75a68a64-a878-4229-852a-9b2b6f58e045",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should display ponies",
+              "fullTitle": "Races should display ponies",
+              "timedOut": null,
+              "duration": 183,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('/races');\ncy.wait('@getRaces');\ncy.get('figure').should('have.length', 10);\ncy.get('img').should('have.length', 10);\ncy.get('figcaption').should('have.length', 10);",
+              "err": {},
+              "uuid": "948f23bb-9ae7-4111-8ba0-69d04d98d825",
+              "parentUUID": "75a68a64-a878-4229-852a-9b2b6f58e045",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "213a3452-a988-4641-8bce-2e3f388d3eff",
+            "948f23bb-9ae7-4111-8ba0-69d04d98d825"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 518,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "results/mochawesome",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}
