@@ -42,6 +42,8 @@ describe('Live', () => {
     cy.intercept('GET', 'api/races/12', race).as('getRace');
 
     cy.intercept('POST', 'api/races/12/bets', { ...race, betPonyId: 1 }).as('betRace');
+
+    cy.intercept('POST', 'api/races/12/boosts', {}).as('boostPony');
   }
 
   function storeUserInLocalStorage(): void {
@@ -66,7 +68,7 @@ describe('Live', () => {
           fakeWS.id = unmarshalled.headers['id'];
         }
       },
-      emulateRace: (liveRaceModel: LiveRaceModel) => {
+      emulateRace: (liveRaceModel: any) => {
         const headers = {
           destination: '/race/12',
           subscription: fakeWS.id
@@ -93,10 +95,12 @@ describe('Live', () => {
     const { wsOptions } = buildFakeWS();
     cy.visit('/races', wsOptions);
     cy.wait('@getRaces');
+    cy.wait(1000);
 
     // go to bet page for the first race
     cy.get('.btn-primary').first().click();
     cy.wait('@getRace');
+    cy.wait(1000);
 
     // bet on first pony
     cy.get('img').first().click();
@@ -108,6 +112,7 @@ describe('Live', () => {
       betPonyId: 2,
       status: 'PENDING'
     }).as('getPendingRace');
+    cy.wait(1000);
 
     // go to live
     cy.get('.btn-primary').first().click();
@@ -121,20 +126,23 @@ describe('Live', () => {
     cy.get('.selected').should('have.length', 1);
   });
 
-  it('should display a running live race', () => {
+  it('should display a running live race and boost a pony', () => {
     storeUserInLocalStorage();
     const { fakeWS, wsOptions } = buildFakeWS();
 
     cy.visit('/races', wsOptions);
     cy.wait('@getRaces');
+    cy.wait(1000);
 
     // go to bet page for the first race
     cy.get('.btn-primary').first().click();
     cy.wait('@getRace');
+    cy.wait(1000);
 
     // bet on first pony
     cy.get('img').first().click();
     cy.wait('@betRace');
+    cy.wait(1000);
 
     // emulate a running race
     cy.intercept('GET', 'api/races/12', {
@@ -197,7 +205,31 @@ describe('Live', () => {
         angular.applyChanges(liveComponent);
       });
     cy.get('img').should('have.length', 5);
-    cy.get('div.pony-wrapper').should('have.attr', 'style').and('include', 'margin-left: 45%;');
+    cy.get('div.pony-wrapper')
+      .should('have.attr', 'style')
+      .and('include', 'margin-left: 45%;')
+      .then(() => {
+        fakeWS.emulateRace({
+          ponies: [
+            { id: 1, name: 'Gentle Pie', color: 'YELLOW', position: 60, boosted: true },
+            { id: 2, name: 'Big Soda', color: 'ORANGE', position: 90 },
+            { id: 3, name: 'Gentle Bottle', color: 'PURPLE', position: 70 },
+            { id: 4, name: 'Superb Whiskey', color: 'GREEN', position: 65 },
+            { id: 5, name: 'Fast Rainbow', color: 'BLUE', position: 30 }
+          ],
+          status: 'RUNNING'
+        });
+        // the component can be inside ng-component if it has no selector
+        const element = document.querySelector('pr-live') || document.querySelector('ng-component');
+        const liveComponent = angular.getComponent(element);
+        angular.applyChanges(liveComponent);
+      });
+
+    // boost the first pony
+    cy.wait(1000);
+    cy.get('img').first().click().click().click().click().click();
+    cy.wait('@boostPony').its('request.body').should('contain', { ponyId: 1 });
+    cy.get('img').should('have.attr', 'src').and('include', '-rainbow.gif');
   });
 
   it('should display a finished live race', () => {
@@ -206,14 +238,17 @@ describe('Live', () => {
 
     cy.visit('/races', wsOptions);
     cy.wait('@getRaces');
+    cy.wait(1000);
 
     // go to bet page for the first race
     cy.get('.btn-primary').first().click();
     cy.wait('@getRace');
+    cy.wait(1000);
 
     // bet on first pony
     cy.get('img').first().click();
     cy.wait('@betRace');
+    cy.wait(1000);
 
     // emulate a finished race
     cy.intercept('GET', 'api/races/12', {
