@@ -15,6 +15,7 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { JwtInterceptor } from './jwt.interceptor';
+import { BetComponent } from './bet/bet.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { JwtInterceptor } from './jwt.interceptor';
     FromNowPipe,
     HomeComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    BetComponent
   ],
   imports: [BrowserModule, HttpClientModule, RouterModule.forRoot(ROUTES), ReactiveFormsModule, FormsModule],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }],
