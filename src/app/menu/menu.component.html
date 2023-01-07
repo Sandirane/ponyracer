@@ -7,10 +7,10 @@
     <div id="navbar" class="navbar-collapse" [ngbCollapse]="navbarCollapsed">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link" *ngIf="user" routerLink="/races">Races</a>
+          <a class="nav-link" *ngIf="userEvents | async" routerLink="/races">Races</a>
         </li>
       </ul>
-      <ul class="navbar-nav" *ngIf="user">
+      <ul class="navbar-nav" *ngIf="userEvents | async as user">
         <li class="nav-item">
           <a class="nav-link" routerLink="/users/money/history">
             <span id="current-user" class="me-2">

@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { PonyModel } from '../models/pony.model';
 
 @Component({
   selector: 'pr-pony',
   templateUrl: './pony.component.html',
-  styleUrls: ['./pony.component.css']
+  styleUrls: ['./pony.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PonyComponent {
   @Input() ponyModel!: PonyModel;

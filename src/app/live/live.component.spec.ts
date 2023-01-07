@@ -1,4 +1,5 @@
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ChangeDetectorRef } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
@@ -199,6 +200,8 @@ describe('LiveComponent', () => {
     raceService.live.and.returnValue(positions);
 
     const fixture = TestBed.createComponent(LiveComponent);
+    const changeDetectorRef = (fixture.componentInstance as any).ref as ChangeDetectorRef;
+    spyOn(changeDetectorRef, 'markForCheck').and.callThrough();
     fixture.detectChanges();
 
     const element = fixture.nativeElement;
@@ -213,6 +216,7 @@ describe('LiveComponent', () => {
     ]);
     fixture.detectChanges();
 
+    expect(changeDetectorRef.markForCheck).toHaveBeenCalled();
     const debugElement = fixture.debugElement;
     const ponyComponents = debugElement.queryAll(By.directive(PonyComponent));
     expect(ponyComponents).withContext('You should display a `PonyComponent` for each pony').not.toBeNull();
@@ -237,6 +241,8 @@ describe('LiveComponent', () => {
     raceService.live.and.returnValue(positions);
 
     const fixture = TestBed.createComponent(LiveComponent);
+    const changeDetectorRef = (fixture.componentInstance as any).ref as ChangeDetectorRef;
+    spyOn(changeDetectorRef, 'markForCheck').and.callThrough();
     fixture.detectChanges();
 
     const element = fixture.nativeElement;
@@ -253,6 +259,7 @@ describe('LiveComponent', () => {
     fixture.detectChanges();
 
     // won the bet!
+    expect(changeDetectorRef.markForCheck).toHaveBeenCalled();
     const debugElement = fixture.debugElement;
     const ponyComponents = debugElement.queryAll(By.directive(PonyComponent));
     expect(ponyComponents).withContext('You should display a `PonyComponent` for each winner').not.toBeNull();
@@ -265,23 +272,37 @@ describe('LiveComponent', () => {
     expect(success).withContext('You should have a success NgbAlert to display the bet won').not.toBeNull();
     expect(success.nativeElement.textContent).toContain('You won your bet!');
     expect(success.componentInstance.type).withContext('The alert should be a success one').toBe('success');
+  });
 
-    // lost the bet...
-    fixture.componentInstance.betWon = false;
-    fixture.detectChanges();
-    const betFailed = fixture.debugElement.query(By.directive(NgbAlert));
-    expect(betFailed).withContext('You should have a warning NgbAlert to display the bet failed').not.toBeNull();
-    expect(betFailed.nativeElement.textContent).toContain('You lost your bet.');
-    expect(betFailed.componentInstance.type).withContext('The alert should be a warning one').toBe('warning');
+  it('should display the finished race with an error', () => {
+    const fakeActivatedRoute = TestBed.inject(ActivatedRoute);
+    const race = {
+      id: 1,
+      name: 'Lyon',
+      status: 'PENDING',
+      ponies: [
+        { id: 1, name: 'Sunny Sunday', color: 'BLUE' },
+        { id: 2, name: 'Pinkie Pie', color: 'GREEN' },
+        { id: 3, name: 'Awesome Fridge', color: 'YELLOW' }
+      ],
+      startInstant: '2020-02-18T08:02:00Z',
+      betPonyId: 1
+    } as RaceModel;
+    fakeActivatedRoute.snapshot.data = { race };
+    const positions = new Subject<Array<PonyWithPositionModel>>();
+    raceService.live.and.returnValue(positions);
 
-    // no winners (race was already over)
-    fixture.componentInstance.winners = [];
+    const fixture = TestBed.createComponent(LiveComponent);
+    const changeDetectorRef = (fixture.componentInstance as any).ref as ChangeDetectorRef;
+    spyOn(changeDetectorRef, 'markForCheck').and.callThrough();
     fixture.detectChanges();
-    expect(element.textContent).toContain('The race is over.');
+    positions.error(new Error());
+    fixture.detectChanges();
 
     // an error occurred
-    fixture.componentInstance.error = true;
-    fixture.detectChanges();
+    expect(changeDetectorRef.markForCheck).toHaveBeenCalled();
+    expect(fixture.componentInstance.error).toBeTruthy();
+    const debugElement = fixture.debugElement;
     const alert = debugElement.query(By.directive(NgbAlert));
     expect(alert).withContext('You should have an NgbAlert to display the error').not.toBeNull();
     expect(alert.nativeElement.textContent).toContain('A problem occurred during the live.');
@@ -294,6 +315,57 @@ describe('LiveComponent', () => {
     expect(debugElement.query(By.directive(NgbAlert)))
       .withContext('The NgbAlert should not be closable')
       .not.toBeNull();
+  });
+
+  it('should display the finished race if already over', () => {
+    const activatedRoute = TestBed.inject(ActivatedRoute);
+    activatedRoute.snapshot.data['race'] = { ...race };
+    const positions = new Subject<Array<PonyWithPositionModel>>();
+    raceService.live.and.returnValue(positions);
+
+    const fixture = TestBed.createComponent(LiveComponent);
+    fixture.detectChanges();
+
+    const element = fixture.nativeElement;
+    positions.complete();
+    fixture.detectChanges();
+
+    // no winners (race was already over)
+    fixture.componentInstance.winners = [];
+    fixture.detectChanges();
+    expect(element.textContent).toContain('The race is over.');
+  });
+
+  it('should display the finished race with lost bet', () => {
+    const activatedRoute = TestBed.inject(ActivatedRoute);
+    activatedRoute.snapshot.data['race'] = {
+      ...race,
+      ponies: [
+        { id: 1, name: 'Sunny Sunday', color: 'BLUE' },
+        { id: 2, name: 'Pinkie Pie', color: 'GREEN' },
+        { id: 3, name: 'Awesome Fridge', color: 'YELLOW' }
+      ],
+      betPonyId: 3
+    };
+    const positions = new Subject<Array<PonyWithPositionModel>>();
+    raceService.live.and.returnValue(positions);
+
+    const fixture = TestBed.createComponent(LiveComponent);
+    fixture.detectChanges();
+
+    positions.next([
+      { id: 1, name: 'Sunny Sunday', color: 'BLUE', position: 101 },
+      { id: 2, name: 'Pinkie Pie', color: 'GREEN', position: 100 },
+      { id: 3, name: 'Awesome Fridge', color: 'YELLOW', position: 9 }
+    ]);
+    positions.complete();
+    fixture.detectChanges();
+
+    // lost the bet...
+    const betFailed = fixture.debugElement.query(By.directive(NgbAlert));
+    expect(betFailed).withContext('You should have a warning NgbAlert to display the bet failed').not.toBeNull();
+    expect(betFailed.nativeElement.textContent).toContain('You lost your bet.');
+    expect(betFailed.componentInstance.type).withContext('The alert should be a warning one').toBe('warning');
   });
 
   it('should listen to click events on ponies in the template', () => {
