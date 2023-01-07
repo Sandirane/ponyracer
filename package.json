@@ -26,6 +26,8 @@
     "@ng-bootstrap/ng-bootstrap": "13.1.0",
     "@popperjs/core": "2.11.6",
     "bootstrap": "5.2.2",
+    "chart.js": "4.0.1",
+    "chartjs-adapter-date-fns": "2.0.1",
     "date-fns": "2.29.3",
     "font-awesome": "4.7.0",
     "rxjs": "7.5.7",

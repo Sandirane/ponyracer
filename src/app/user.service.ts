@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../environments/environment';
 import { UserModel } from './models/user.model';
 import { WsService } from './ws.service';
+import { MoneyHistoryModel } from './models/money-history.model';
 
 @Injectable({
   providedIn: 'root'
@@ -51,5 +52,9 @@ export class UserService {
 
   scoreUpdates(userId: number): Observable<UserModel> {
     return this.wsService.connect<UserModel>(`/player/${userId}`);
+  }
+
+  getMoneyHistory(): Observable<Array<MoneyHistoryModel>> {
+    return this.http.get<Array<MoneyHistoryModel>>(`${environment.baseUrl}/api/money/history`);
   }
 }
