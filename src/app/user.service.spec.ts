@@ -93,4 +93,13 @@ describe('UserService', () => {
     expect(userService.userEvents.next).toHaveBeenCalledWith(null);
     expect(Storage.prototype.removeItem).toHaveBeenCalledWith('rememberMe');
   });
+
+  it('should get the current user', () => {
+    spyOn(userService.userEvents, 'getValue').and.returnValue(user);
+
+    const currentUser = userService.getCurrentUser();
+
+    expect(userService.userEvents.getValue).toHaveBeenCalled();
+    expect(currentUser).toBe(user);
+  });
 });
